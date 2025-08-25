@@ -1,6 +1,0 @@
-{
-  "method": "GET",
-  "url": "https://petstore.swagger.io/v2/pet/3",
-  "headers": "Content-type: application/xml\nAccept: application/xml",
-  "body": ""
-}
