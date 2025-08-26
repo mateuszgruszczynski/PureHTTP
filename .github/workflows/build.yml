@@ -47,11 +47,20 @@ jobs:
       - name: Install Tauri CLI
         run: cargo install tauri-cli --version "^2.0" --locked
 
-      - name: Build application
-        run: cargo tauri build --target ${{ matrix.platform.rust_target }} --bundles deb,rpm,nsis,msi,dmg,app
+      - name: Build application (Linux)
+        if: matrix.platform.os == 'ubuntu-latest'
+        run: cargo tauri build --target ${{ matrix.platform.rust_target }} --bundles deb,rpm
+
+      - name: Build application (macOS)
+        if: matrix.platform.os == 'macos-latest'
+        run: cargo tauri build --target ${{ matrix.platform.rust_target }} --bundles dmg,app
         env:
           TAURI_SIGNING_PRIVATE_KEY: ${{ secrets.TAURI_SIGNING_PRIVATE_KEY }}
           TAURI_SIGNING_PRIVATE_KEY_PASSWORD: ${{ secrets.TAURI_SIGNING_PRIVATE_KEY_PASSWORD }}
+
+      - name: Build application (Windows)
+        if: matrix.platform.os == 'windows-latest'
+        run: cargo tauri build --target ${{ matrix.platform.rust_target }} --bundles nsis,msi
 
       - name: Upload artifacts (Linux)
         if: matrix.platform.os == 'ubuntu-latest'
