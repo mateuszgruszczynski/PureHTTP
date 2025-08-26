@@ -3,7 +3,6 @@
 
 # Tauri build artifacts  
 /gen
-/dist
 
 # IDE files
 .vscode/

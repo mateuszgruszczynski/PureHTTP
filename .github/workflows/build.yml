@@ -48,7 +48,10 @@ jobs:
         run: cargo install tauri-cli --version "^2.0" --locked
 
       - name: Build application
-        run: cargo tauri build --target ${{ matrix.platform.rust_target }}
+        run: cargo tauri build --target ${{ matrix.platform.rust_target }} --bundles deb,rpm,nsis,msi,dmg,app
+        env:
+          TAURI_SIGNING_PRIVATE_KEY: ${{ secrets.TAURI_SIGNING_PRIVATE_KEY }}
+          TAURI_SIGNING_PRIVATE_KEY_PASSWORD: ${{ secrets.TAURI_SIGNING_PRIVATE_KEY_PASSWORD }}
 
       - name: Upload artifacts (Linux)
         if: matrix.platform.os == 'ubuntu-latest'
@@ -56,8 +59,8 @@ jobs:
         with:
           name: purehttp-linux-x86_64
           path: |
-            target/${{ matrix.platform.rust_target }}/release/bundle/appimage/purehttp_*.AppImage
-            target/${{ matrix.platform.rust_target }}/release/bundle/deb/purehttp_*.deb
+            target/${{ matrix.platform.rust_target }}/release/bundle/deb/PureHTTP_*.deb
+            target/${{ matrix.platform.rust_target }}/release/bundle/rpm/PureHTTP_*.rpm
 
       - name: Upload artifacts (macOS x86_64)
         if: matrix.platform.os == 'macos-latest' && matrix.platform.rust_target == 'x86_64-apple-darwin'
@@ -100,8 +103,8 @@ jobs:
         uses: softprops/action-gh-release@v1
         with:
           files: |
-            purehttp_*.AppImage
-            purehttp_*.deb
+            PureHTTP_*.deb
+            PureHTTP_*.rpm
             PureHTTP_*.dmg
             PureHTTP_*.msi
             PureHTTP_*.exe
