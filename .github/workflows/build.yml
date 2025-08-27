@@ -47,7 +47,7 @@ jobs:
 
       - name: Build application (Linux)
         if: matrix.platform.os == 'ubuntu-latest'
-        run: cargo tauri build --target ${{ matrix.platform.rust_target }} --bundles appimage
+        run: cargo tauri build --target ${{ matrix.platform.rust_target }}
 
       - name: Build application (macOS)
         if: matrix.platform.os == 'macos-latest'
@@ -66,7 +66,7 @@ jobs:
         with:
           name: purehttp-linux-x86_64
           path: |
-            target/${{ matrix.platform.rust_target }}/release/bundle/appimage/purehttp_*.AppImage
+            target/${{ matrix.platform.rust_target }}/release/purehttp
 
       - name: Upload artifacts (macOS ARM64)
         if: matrix.platform.os == 'macos-latest'
@@ -98,6 +98,6 @@ jobs:
         uses: softprops/action-gh-release@v1
         with:
           files: |
-            purehttp_*.AppImage
+            purehttp
             PureHTTP.app
             PureHTTP_*.msi
